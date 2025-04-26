@@ -1,0 +1,40 @@
+here's the **enhanced additions** to your `configuration.nix`:
+
+```nix
+{ config, pkgs, ... }:
+
+{
+  imports =
+    [ ./hardware-configuration.nix ];
+
+  system.stateVersion = "24.11";
+
+  networking.networkmanager.enable = true;
+  time.timeZone = "Your/Timezone";
+
+  users.users.yourusername = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" "networkmanager" "video" "input" ];
+    packages = with pkgs; [
+      firefox
+      git
+      vscode
+      tlp
+      powertop
+      undervolt
+      light
+      lm_sensors
+      thinkfan
+      fprintd
+      vim
+      gparted
+      ghostty
+
+    ];
+  };
+
+boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  hardware.enableRedistributableFirmware = true;
+  services.fwupd.enable = true;
